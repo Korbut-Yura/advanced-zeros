@@ -1,32 +1,35 @@
 module.exports = function getZerosCount(number, base) {
-        let result = 0,
-          i = 1;
-    
-        base = findBase(base);
-    
-        function findBase(base) {
-            let m = 1;
-            for (let j = 2; j <= base; j++) {
-                if (base % j == 0) {
-                    while (base % j == 0 && base > j) {
-                        base /= j;
-                        m++;
-                    }
-                    if (base != j) {
-                        m = 1
-                        findBase(base);
-                    }
-                    else {
-                        return [base,m];
-                    }
-                }
+    let option = [ ],
+        solution = [ ],
+        root = base;
+  
+    for ( let i = 2; i <= root; i++) {
+        if ( root % i == 0 ) {
+            while ( root % i == 0 && root >= i) {
+            root /= i;
             }
+        option.push(i)
         }
+    }
+    for (let j = 0; j < option.length; j++) {
+        solution[j] = findSolution(number, base, option[j]);
+    }
+    return solution.sort((a,b) => {return a-b})[0];
+}
 
-        while (Math.pow(base[0],i) < number){
-            result += Math.floor(number/Math.pow(base[0],i));
-            i++;
-        }
-    
-        return Math.floor(result/base[1]);
-  }
+function findSolution(number, base, root) {
+    let count = 0,
+        result = 0,
+        i = 1;
+    while (base % root == 0) {
+        base /= root
+        count++; 
+    }
+    while (Math.pow(root,i) < number){
+        result += Math.floor(number/Math.pow(root,i));
+        i++;
+    }
+    return Math.floor(result/count);
+}
+
+
